@@ -20,7 +20,7 @@ class DiscreteField(FieldSpec):
         random_idx = random.randint(0, len(self.field)-1)
         return self.field[random_idx]
 
-class ContinousField(FieldSpec):
+class IntegerField(FieldSpec):
     def __init__(self,field_name,lower_bound,upper_bound):
         super().__init__(field_name)
         self.upper_bound = upper_bound
@@ -40,18 +40,18 @@ class DatasetSpec():
 
     def write_data(self):
         field_names = [f.field_name for f in self.field_spec_list]
-        with open(f"{self.dataset_name}.csv","w") as f:
+        with open(self.dataset_name,"w") as f:
             writer = csv.DictWriter(f, field_names)
             writer.writeheader()
             for i in range(self.count):
                 temp_dict = {f.field_name:f.get_field_value() for f in self.field_spec_list}
                 writer.writerow(temp_dict)
-        f.close()
+
 
 d1 = DiscreteField("SIM",["SIM A","SIM B"])
-d2 = ContinousField("Tahun",2011,2015)
+d2 = IntegerField("tahun", 2030, 2045)
+ds = DatasetSpec("coba.csv", 300)
 
-ds = DatasetSpec("coba", 100)
 ds.add_field(d1)
 ds.add_field(d2)
 ds.write_data()
